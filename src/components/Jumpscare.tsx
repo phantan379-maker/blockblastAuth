@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 
 // Please upload your image to the public folder and rename it to 'jumpscare.png'
-const JUMPSCARE_IMAGE = "./jumpscare.png"; 
-// Please upload your audio file to the public folder and rename it to 'screamer.mp3'
-const SCARE_SND = "./screamer.mp3";
+const base = import.meta.env.BASE_URL;
+const JUMPSCARE_IMAGE = `${base}jumpscare.png`; 
+const SCARE_SND = `${base}screamer.mp3`;
 
 export const Jumpscare = () => {
     const audioRef = useRef<HTMLAudioElement | null>(null);

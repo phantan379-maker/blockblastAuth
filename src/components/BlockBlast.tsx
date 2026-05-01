@@ -172,10 +172,10 @@ const loadBuffer = async (url: string, name: string) => {
 const initAudio = () => {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    // Please upload these ogg files to your public/ directory
-    loadBuffer('./place.ogg', 'place');
-    loadBuffer('./clear.ogg', 'clear');
-    loadBuffer('./combo.ogg', 'combo');
+    const base = import.meta.env.BASE_URL;
+    loadBuffer(`${base}place.ogg`, 'place');
+    loadBuffer(`${base}clear.ogg`, 'clear');
+    loadBuffer(`${base}combo.ogg`, 'combo');
   }
 };
 
