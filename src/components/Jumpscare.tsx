@@ -1,8 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 
-// Please upload your image to the public folder and rename it to 'jumpscare.png'
-const JUMPSCARE_IMAGE = "https://raw.githubusercontent.com/phantan379-maker/blockblastAuth/main/public/jumpscare.png"; 
-const SCARE_SND = "https://raw.githubusercontent.com/phantan379-maker/blockblastAuth/main/public/screamer.mp3";
+// ==========================================
+// ASSET CONFIGURATION
+// You can replace these URLs with your own Imgur or direct links
+// ==========================================
+const JUMPSCARE_IMAGE = "https://files.catbox.moe/8p9zxc.png"; 
+const SCARE_SND = "https://files.catbox.moe/jtrnu5.mp3";
+// ==========================================
 
 export const Jumpscare = () => {
     const audioRef = useRef<HTMLAudioElement | null>(null);

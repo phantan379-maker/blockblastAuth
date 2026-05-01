@@ -3,6 +3,16 @@ import { RefreshCw, Trophy, Palette, Flame } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Jumpscare } from './Jumpscare';
 
+// ==========================================
+// AUDIO URL CONFIGURATION
+// You can replace these URLs with direct links to your .ogg or .mp3 files
+// Note: The host you upload them to MUST support CORS, or the audio won't play.
+// ==========================================
+const PLACE_SND_URL = "https://files.catbox.moe/4eeoxr.ogg";
+const CLEAR_SND_URL = "https://files.catbox.moe/uc9a04.ogg";
+const COMBO_SND_URL = "https://files.catbox.moe/zzakw7.ogg";
+// ==========================================
+
 type GridData = number[][]; // 0 empty, 1..9 color index
 interface ShapeDef { id: string; matrix: number[][]; colorIdx: number; }
 interface ExplosionData { id: string; r: number; c: number; colorIdx: number; isCombo: boolean; }
@@ -172,10 +182,9 @@ const loadBuffer = async (url: string, name: string) => {
 const initAudio = () => {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const base = "https://raw.githubusercontent.com/phantan379-maker/blockblastAuth/main/public/";
-    loadBuffer(`${base}place.ogg`, 'place');
-    loadBuffer(`${base}clear.ogg`, 'clear');
-    loadBuffer(`${base}combo.ogg`, 'combo');
+    loadBuffer(PLACE_SND_URL, 'place');
+    loadBuffer(CLEAR_SND_URL, 'clear');
+    loadBuffer(COMBO_SND_URL, 'combo');
   }
 };
 
