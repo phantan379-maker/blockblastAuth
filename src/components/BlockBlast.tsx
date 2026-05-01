@@ -172,7 +172,7 @@ const loadBuffer = async (url: string, name: string) => {
 const initAudio = () => {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const base = import.meta.env.BASE_URL;
+    const base = "https://raw.githubusercontent.com/phantan379-maker/blockblastAuth/main/public/";
     loadBuffer(`${base}place.ogg`, 'place');
     loadBuffer(`${base}clear.ogg`, 'clear');
     loadBuffer(`${base}combo.ogg`, 'combo');

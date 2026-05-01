@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 
 // Please upload your image to the public folder and rename it to 'jumpscare.png'
-const base = import.meta.env.BASE_URL;
-const JUMPSCARE_IMAGE = `${base}jumpscare.png`; 
-const SCARE_SND = `${base}screamer.mp3`;
+const JUMPSCARE_IMAGE = "https://raw.githubusercontent.com/phantan379-maker/blockblastAuth/main/public/jumpscare.png"; 
+const SCARE_SND = "https://raw.githubusercontent.com/phantan379-maker/blockblastAuth/main/public/screamer.mp3";
 
 export const Jumpscare = () => {
     const audioRef = useRef<HTMLAudioElement | null>(null);
