@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { RefreshCw, Trophy, Palette, Flame } from 'lucide-react';
+import { RefreshCw, Trophy, Palette, Flame, Zap, TreePine, CircleDashed } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Jumpscare } from './Jumpscare';
 
@@ -22,7 +22,7 @@ const THEMES = {
     name: 'Vibrant',
     appBg: 'bg-[#181a33]',
     gridBg: 'bg-[#1e2444]',
-    gridBorder: 'border-[#181a33] shadow-2xl',
+    gridBorder: 'border-[#181a33] shadow-2xl rounded-xl',
     text: 'text-white',
     scoreLabel: 'text-slate-400',
     emptyCell: 'bg-[#293256] rounded-[4px] shadow-[inset_0_0_8px_rgba(0,0,0,0.2)]',
@@ -36,7 +36,7 @@ const THEMES = {
     name: 'Cyber Neon',
     appBg: 'bg-zinc-950',
     gridBg: 'bg-black',
-    gridBorder: 'border-fuchsia-900/40 shadow-[0_0_20px_rgba(217,70,239,0.15)]',
+    gridBorder: 'border-fuchsia-900/40 shadow-[0_0_20px_rgba(217,70,239,0.15)] rounded-xl',
     text: 'text-fuchsia-100',
     scoreLabel: 'text-fuchsia-400/70',
     emptyCell: 'bg-zinc-900/30 border border-zinc-800/50',
@@ -57,7 +57,7 @@ const THEMES = {
     name: 'Classic Wood',
     appBg: 'bg-[#211611]',
     gridBg: 'bg-[#3b2a21]',
-    gridBorder: 'border-[#1f1510] shadow-2xl',
+    gridBorder: 'border-[#1f1510] shadow-2xl rounded-xl',
     text: 'text-amber-100',
     scoreLabel: 'text-amber-500/70',
     emptyCell: 'bg-[#291e17] border-t border-l border-[#45362b] border-b border-r border-[#1a120e]',
@@ -71,7 +71,7 @@ const THEMES = {
     name: 'Retro Bevel',
     appBg: 'bg-zinc-100',
     gridBg: 'bg-white',
-    gridBorder: 'border-zinc-200 shadow-xl',
+    gridBorder: 'border-zinc-200 shadow-xl rounded-xl',
     text: 'text-slate-900',
     scoreLabel: 'text-slate-500',
     emptyCell: 'bg-zinc-100 rounded-none',
@@ -80,9 +80,86 @@ const THEMES = {
       'bg-[#72c2da]', 'bg-[#224497]', 'bg-[#984594]', 'bg-[#ec4899]', 'bg-[#14b8a6]'
     ],
     blockClasses: 'border-[5px] border-t-white/40 border-l-white/40 border-b-black/30 border-r-black/30 rounded-none'
+  },
+  breakfast: {
+    name: 'Sizzling Breakfast',
+    appBg: 'bg-zinc-800',
+    gridBg: 'bg-zinc-950 bg-[radial-gradient(#333_1px,transparent_1px)] [background-size:20px_20px]',
+    gridBorder: 'border-zinc-800 shadow-[0_10px_30px_rgba(0,0,0,0.7),inset_0_0_20px_rgba(0,0,0,0.9)] rounded-[16px]',
+    text: 'text-zinc-100',
+    scoreLabel: 'text-orange-400/80',
+    emptyCell: 'bg-zinc-900/60 border border-zinc-800/40 rounded-[4px]',
+    colors: Array(9).fill('bg-breakfast'), // dummy class to indicate it's not empty
+    blockClasses: ''
   }
 };
 type ThemeKey = keyof typeof THEMES;
+
+const THEME_ICONS: Record<ThemeKey, React.ElementType> = {
+    vibrant: Palette,
+    neon: Zap,
+    wood: TreePine,
+    retro: CircleDashed,
+    breakfast: Flame
+};
+
+const BreakfastCell = ({ colorIdx }: { colorIdx: number }) => {
+   if (colorIdx === 0) return null;
+
+   if (colorIdx === 7) {
+       return (
+           <div className="absolute inset-[2px] bg-[#8B2323] rounded-sm shadow-[inset_0_2px_0_rgba(255,255,255,0.2),inset_0_-2px_0_rgba(0,0,0,0.4)] overflow-hidden flex flex-col justify-evenly">
+              <div className="w-full h-[3px] bg-[#E8B8B8] opacity-60 skew-y-3" />
+              <div className="w-full h-[4px] bg-[#E8B8B8] opacity-60 -skew-y-3" />
+              <div className="w-full h-[3px] bg-[#E8B8B8] opacity-60 skew-y-3" />
+           </div>
+       );
+   }
+
+   if (colorIdx === 8) {
+       return (
+           <div className="absolute inset-[2px] bg-[#70321F] rounded-full shadow-[inset_0_4px_4px_rgba(255,255,255,0.2),inset_0_-4px_4px_rgba(0,0,0,0.5)] flex items-center justify-center">
+              <div className="w-[70%] h-[70%] rounded-full bg-[#5C2616] opacity-50 shadow-inner" />
+           </div>
+       );
+   }
+
+   const yolkColors = [
+       '',
+       'bg-yellow-400', // 1
+       'bg-orange-500', // 2
+       'bg-amber-400',  // 3
+       'bg-[#FFD700]',  // 4
+       'bg-[#FFA500]',  // 5
+       '', '', '', // 7,8 bacon/sausage
+       'bg-lime-400'    // 9
+   ];
+
+   const isQuail = colorIdx === 6;
+   
+   return (
+       <div className="absolute inset-[1px] bg-[radial-gradient(ellipse_at_top_left,_#ffffff_0%,_#fbf8f1_70%,_#e6dfd1_100%)] rounded-[8px] shadow-[0_2px_4px_rgba(0,0,0,0.3),inset_0_-2px_4px_rgba(0,0,0,0.1)] flex items-center justify-center">
+          {isQuail ? (
+             <div className="relative w-full h-full">
+                <div className="absolute top-[15%] left-[15%] w-[35%] h-[35%] bg-yellow-400 rounded-full shadow-[inset_-1px_-2px_2px_rgba(0,0,0,0.2)]">
+                   <div className="absolute top-[15%] left-[15%] w-[25%] h-[25%] bg-white rounded-full opacity-60" />
+                </div>
+                <div className="absolute bottom-[20%] left-[25%] w-[30%] h-[30%] bg-orange-400 rounded-full shadow-[inset_-1px_-2px_2px_rgba(0,0,0,0.2)]">
+                   <div className="absolute top-[15%] left-[15%] w-[25%] h-[25%] bg-white rounded-full opacity-60" />
+                </div>
+                <div className="absolute top-[35%] right-[15%] w-[40%] h-[40%] bg-yellow-500 rounded-full shadow-[inset_-1px_-2px_2px_rgba(0,0,0,0.2)]">
+                   <div className="absolute top-[15%] left-[15%] w-[25%] h-[25%] bg-white rounded-full opacity-60" />
+                </div>
+             </div>
+          ) : (
+             <div className={`w-[60%] h-[60%] rounded-full ${yolkColors[colorIdx] || 'bg-yellow-400'} shadow-[inset_-2px_-3px_5px_rgba(0,0,0,0.2),0_2px_5px_rgba(0,0,0,0.2)] relative`}>
+                <div className="absolute top-[15%] left-[15%] w-[25%] h-[25%] bg-white rounded-full opacity-70 blur-[1px]" />
+                <div className="absolute top-[35%] left-[12%] w-[15%] h-[15%] bg-white rounded-full opacity-40 blur-[0.5px]" />
+             </div>
+          )}
+       </div>
+   );
+}
 
 const SHAPE_DEFS_RAW = [
   [[1]], [[1, 1]], [[1], [1]], [[1, 1, 1]], [[1], [1], [1]], [[1, 1, 1, 1]], [[1], [1], [1], [1]],
@@ -186,6 +263,9 @@ const initAudio = () => {
     loadBuffer(CLEAR_SND_URL, 'clear');
     loadBuffer(COMBO_SND_URL, 'combo');
   }
+  if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+  }
 };
 
 const playSynth = (type: 'place' | 'clear' | 'combo', streak: number = 0) => {
@@ -253,12 +333,17 @@ const ParticleExplosion = ({ exp, dim, themeColorClass }: {key?: string, exp: Ex
   
   // Clean string to get primary color for background of particle if it's neon
   const cleanColor = themeColorClass.replace(/bg-transparent|border-\d|border-[a-z]+-\d+|shadow-\[.*?\]/g, '').trim() || themeColorClass;
-  // Actually, for particles we just use the raw class, React will figure it out, but neon's 'bg-transparent border' might look weird. 
-  // Let's force a background by matching 'border-' to get the color, or fallback to the full class.
+  
   let particleColor = themeColorClass;
   if(themeColorClass.includes('border-')) {
      const match = themeColorClass.match(/border-([a-z]+-\d+)/);
      if(match) particleColor = `bg-${match[1]}`;
+  }
+
+  let isRounded = "rounded-sm";
+  if (themeColorClass.includes('breakfast')) {
+      particleColor = Math.random() > 0.4 ? 'bg-yellow-400' : 'bg-white';
+      isRounded = "rounded-full";
   }
 
   return (
@@ -272,7 +357,7 @@ const ParticleExplosion = ({ exp, dim, themeColorClass }: {key?: string, exp: Ex
                 initial={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }}
                 animate={{ opacity: 0, x: Math.cos(angle)*dist, y: Math.sin(angle)*dist, scale: 0.2, rotate: Math.random()*360 }}
                 transition={{ duration: 0.4 + Math.random()*0.3, ease: "easeOut" }}
-                className={`absolute w-2.5 h-2.5 -ml-1 -mt-1 rounded-sm shadow-md ${particleColor}`}
+                className={`absolute w-3 h-3 -ml-1.5 -mt-1.5 ${isRounded} shadow-md ${particleColor}`}
              />
           );
        })}
@@ -309,6 +394,20 @@ export const BlockBlast = () => {
 
   const gridRef = useRef<HTMLDivElement>(null);
   
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      initAudio();
+      window.removeEventListener('touchstart', handleFirstInteraction);
+      window.removeEventListener('mousedown', handleFirstInteraction);
+    };
+    window.addEventListener('touchstart', handleFirstInteraction);
+    window.addEventListener('mousedown', handleFirstInteraction);
+    return () => {
+      window.removeEventListener('touchstart', handleFirstInteraction);
+      window.removeEventListener('mousedown', handleFirstInteraction);
+    };
+  }, []);
+
   useEffect(() => {
     const saved = localStorage.getItem('blockBlastBest');
     if (saved) setBestScore(parseInt(saved, 10));
@@ -512,6 +611,7 @@ export const BlockBlast = () => {
 
   const getCellClass = (colorIndex: number) => {
       if (colorIndex === 0) return t.emptyCell;
+      if (theme === 'breakfast') return ''; // BreakfastCell handles background
       return `${t.colors[colorIndex - 1]} ${t.blockClasses}`;
   }
 
@@ -540,16 +640,19 @@ export const BlockBlast = () => {
       {/* Header & Theme Switcher */}
       <div className="w-full max-w-md flex justify-between items-start mb-6 px-2">
          <div className="flex gap-2">
-             {Object.entries(THEMES).map(([k, th]) => (
-                <button 
-                  key={k} 
-                  onClick={() => changeTheme(k as ThemeKey)}
-                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${theme === k ? 'ring-2 ring-white scale-110' : 'opacity-50 hover:opacity-100'} ${th.gridBg}`}
-                  title={th.name}
-                >
-                  <Palette size={14} className="opacity-50" />
-                </button>
-             ))}
+             {Object.entries(THEMES).map(([k, th]) => {
+                const Icon = THEME_ICONS[k as ThemeKey] || Palette;
+                return (
+                 <button 
+                   key={k} 
+                   onClick={() => changeTheme(k as ThemeKey)}
+                   className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${theme === k ? 'ring-2 ring-white scale-110' : 'opacity-50 hover:opacity-100'} ${th.gridBg}`}
+                   title={th.name}
+                 >
+                   <Icon size={14} className={theme !== k ? 'opacity-50' : ''} />
+                 </button>
+                )
+             })}
          </div>
          <div className="flex flex-col items-end">
             <div className={`flex items-center text-amber-500 mb-0.5 gap-1`}>
@@ -613,7 +716,7 @@ export const BlockBlast = () => {
                const isHovered = shadow && dragState.shape && 
                   r >= shadow.row && r < shadow.row + dragState.shape.matrix.length &&
                   c >= shadow.col && c < shadow.col + dragState.shape.matrix[0].length &&
-                  dragState.shape.matrix[r - shadow.row][c - shadow.col];
+                  dragState.shape.matrix[r - shadow.row][c - shadow.col] === 1;
                const isPreviewClear = previewClears.rows.includes(r) || previewClears.cols.includes(c);
                const isJustPlaced = lastPlaced.includes(`${r}-${c}`);
 
@@ -621,7 +724,7 @@ export const BlockBlast = () => {
                
                if (isPreviewClear && dragState.shape) {
                   // highlight color of the piece being dropped
-                  cellClass = `${getCellClass(dragState.shape.colorIdx)} opacity-100 scale-105 z-20 shadow-[0_0_20px_inherit] animate-pulse ring-2 ring-white/50`;
+                  cellClass = `${getCellClass(dragState.shape.colorIdx)} opacity-100 scale-105 z-20 ${theme === 'breakfast' ? 'shadow-[0_0_20px_white]' : 'shadow-[0_0_20px_inherit]'} animate-pulse ring-2 ring-white/50`;
                } else if (isHovered) {
                   cellClass = `${getCellClass(dragState.shape!.colorIdx)} opacity-40 shadow-inner`;
                }
@@ -631,13 +734,20 @@ export const BlockBlast = () => {
 
                const willClear = previewClears.rows.length > 0 || previewClears.cols.length > 0;
                const showRainbow = streak >= 3 && willClear && (isHovered || isPreviewClear);
+               
+               const isBreakfastColor = colorIdx > 0 && theme === 'breakfast';
+               const isPreviewBreakfastColor = isHovered && theme === 'breakfast';
 
                return (
                  <div key={`${r}-${c}`} className="relative w-full aspect-square">
                     {showRainbow && (
                        <div className="absolute -inset-[3px] rounded bg-[linear-gradient(90deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#8b00ff,#ff0000)] bg-[length:200%_100%] animate-rainbow-glow opacity-60 blur-[3px] z-0 pointer-events-none" />
                     )}
-                    <div className={`relative w-full h-full ${cellClass} ${animationClasses} z-10 rounded-[2px]`} />
+                    <div className={`relative w-full h-full ${cellClass} ${animationClasses} z-10 rounded-[2px]`}>
+                        {(isBreakfastColor || isPreviewBreakfastColor) && (
+                            <BreakfastCell colorIdx={isHovered ? dragState.shape!.colorIdx : colorIdx} />
+                        )}
+                    </div>
                  </div>
                );
             })
@@ -664,7 +774,10 @@ export const BlockBlast = () => {
               }}
             >
                {shape?.matrix.map((row, r) => row.map((val, c) => (
-                 val ? <div key={`${r}-${c}`} className={`w-full h-full ${getCellClass(shape.colorIdx)}`} /> : <div key={`${r}-${c}`} />
+                 val ? <div key={`${r}-${c}`} className={`relative w-full h-full ${getCellClass(shape.colorIdx)}`}>
+                         {theme === 'breakfast' && <BreakfastCell colorIdx={shape.colorIdx} />}
+                       </div> 
+                     : <div key={`${r}-${c}`} />
                )))}
             </div>
           </div>
@@ -698,7 +811,10 @@ export const BlockBlast = () => {
               }}
            >
                {dragState.shape!.matrix.map((row, r) => row.map((val, c) => (
-                  val ? <div key={`${r}-${c}`} className={`w-full h-full ${getCellClass(dragState.shape!.colorIdx)}`} /> : <div key={`${r}-${c}`} />
+                  val ? <div key={`${r}-${c}`} className={`relative w-full h-full ${getCellClass(dragState.shape!.colorIdx)}`}>
+                           {theme === 'breakfast' && <BreakfastCell colorIdx={dragState.shape!.colorIdx} />}
+                        </div> 
+                      : <div key={`${r}-${c}`} />
                )))}
            </div>
          </div>
