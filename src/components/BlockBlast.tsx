@@ -173,9 +173,9 @@ const initAudio = () => {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
     // Please upload these ogg files to your public/ directory
-    loadBuffer('/place.ogg', 'place');
-    loadBuffer('/clear.ogg', 'clear');
-    loadBuffer('/combo.ogg', 'combo');
+    loadBuffer('./place.ogg', 'place');
+    loadBuffer('./clear.ogg', 'clear');
+    loadBuffer('./combo.ogg', 'combo');
   }
 };
 
